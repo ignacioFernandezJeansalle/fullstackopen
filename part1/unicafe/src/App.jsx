@@ -1,21 +1,46 @@
 import { useState } from "react";
 
 const App = () => {
-  // guarda los clics de cada botón en su propio estado
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const [all, setAll] = useState(0);
+  const [average, setAverage] = useState(0);
+  const [positive, setPositive] = useState(0);
+
+  const calculateStatistics = ({ good, neutral, bad }) => {
+    const newAll = good + neutral + bad;
+    setAll(newAll);
+
+    const newAverage = (good - bad) / newAll;
+    setAverage(newAverage);
+
+    const newPositive = (good / newAll) * 100;
+    setPositive(newPositive);
+  };
 
   const handleClickGood = () => {
-    setGood(good + 1);
+    const newGood = good + 1;
+    setGood(newGood);
+
+    const dataForCalculations = { good: newGood, neutral, bad };
+    calculateStatistics(dataForCalculations);
   };
 
   const handleClickNeutral = () => {
-    setNeutral(neutral + 1);
+    const newNeutral = neutral + 1;
+    setNeutral(newNeutral);
+
+    const dataForCalculations = { good, neutral: newNeutral, bad };
+    calculateStatistics(dataForCalculations);
   };
 
   const handleClickBad = () => {
-    setBad(bad + 1);
+    const newBad = bad + 1;
+    setBad(newBad);
+
+    const dataForCalculations = { good, neutral, bad: newBad };
+    calculateStatistics(dataForCalculations);
   };
 
   return (
@@ -25,9 +50,12 @@ const App = () => {
       <button onClick={handleClickNeutral}>neutral</button>
       <button onClick={handleClickBad}>bad</button>
       <h2>Statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
+      <p>all: {all}</p>
+      <p>average: {average}</p>
+      <p>positive: {positive} %</p>
     </main>
   );
 };
