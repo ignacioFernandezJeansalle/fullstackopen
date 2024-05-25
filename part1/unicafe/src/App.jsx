@@ -1,13 +1,17 @@
 import { useState } from "react";
 
 const Statistics = ({ all, average, positive }) => {
-  return (
-    <>
-      <p>all: {all}</p>
-      <p>average: {average}</p>
-      <p>positive: {positive} %</p>
-    </>
-  );
+  if (all >= 1) {
+    return (
+      <>
+        <p>all: {all}</p>
+        <p>average: {average}</p>
+        <p>positive: {positive} %</p>
+      </>
+    );
+  }
+
+  return <p>No feedback given</p>;
 };
 
 const App = () => {
