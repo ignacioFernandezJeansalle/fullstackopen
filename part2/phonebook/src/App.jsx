@@ -10,6 +10,11 @@ function App() {
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
+
+    if (newName === "") return alert("Please enter a valid name");
+
+    if (persons.some((person) => person.name === newName)) return alert(`${newName} is already added to phonebook`);
+
     setPersons(persons.concat({ name: newName }));
     setNewName("");
   };
