@@ -5,13 +5,11 @@ import Total from "./Total";
 function Course({ course }) {
   const { name, parts } = course;
 
-  const exercises = parts.map((part) => part.exercises);
-
   return (
     <article>
       <Header name={name} />
       <Content parts={parts} />
-      <Total exercises={exercises} />
+      <Total parts={parts} />
     </article>
   );
 }

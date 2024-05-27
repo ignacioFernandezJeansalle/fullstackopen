@@ -1,8 +1,5 @@
-function Total({ exercises }) {
-  let total = 0;
-  for (let i = 0; i < exercises.length; i++) {
-    total += exercises[i];
-  }
+function Total({ parts }) {
+  const total = parts.reduce((accumulator, part) => accumulator + part.exercises, 0);
 
   return <strong>total of {total} exercises</strong>;
 }
