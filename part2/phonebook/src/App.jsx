@@ -13,10 +13,16 @@ function App() {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    personsServices.getAll().then((data) => {
-      setPersons(data);
-      setPersonsToShow(data);
-    });
+    personsServices
+      .getAll()
+      .then((data) => {
+        setPersons(data);
+        setPersonsToShow(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error: could not get data from database");
+      });
   }, []);
 
   const handleChangeNewFilter = (event) => {
@@ -49,39 +55,57 @@ function App() {
       if (window.confirm(`${personFound.name} is already added to phonebook, replace the old number with a new one?`)) {
         const personUpdate = { ...personFound, number: newNumber };
 
-        personsServices.update(personUpdate).then((data) => {
-          const newPersons = persons.map((person) => (person.id !== data.id ? person : data));
+        personsServices
+          .update(personUpdate)
+          .then((data) => {
+            const newPersons = persons.map((person) => (person.id !== data.id ? person : data));
+            setPersons(newPersons);
+
+            setNewName("");
+            setNewNumber("");
+            setFilter("");
+            setPersonsToShow(newPersons);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Error: could not update person");
+          });
+      } else {
+        return;
+      }
+    } else {
+      const newPerson = { name: newName, number: newNumber };
+      personsServices
+        .create(newPerson)
+        .then((data) => {
+          const newPersons = persons.concat(data);
           setPersons(newPersons);
 
           setNewName("");
           setNewNumber("");
           setFilter("");
           setPersonsToShow(newPersons);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Error: could not create person");
         });
-      } else {
-        return;
-      }
-    } else {
-      const newPerson = { name: newName, number: newNumber };
-      personsServices.create(newPerson).then((data) => {
-        const newPersons = persons.concat(data);
-        setPersons(newPersons);
-
-        setNewName("");
-        setNewNumber("");
-        setFilter("");
-        setPersonsToShow(newPersons);
-      });
     }
   };
 
   const handleRemovePersonOf = (person) => {
     if (window.confirm(`Delete ${person.name} ?`)) {
-      personsServices.remove(person.id).then((data) => {
-        const newPersons = persons.filter((person) => person.id !== data.id);
-        setPersons(newPersons);
-        setPersonsToShow(newPersons);
-      });
+      personsServices
+        .remove(person.id)
+        .then((data) => {
+          const newPersons = persons.filter((person) => person.id !== data.id);
+          setPersons(newPersons);
+          setPersonsToShow(newPersons);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Error: could not delete person");
+        });
     }
   };
 
