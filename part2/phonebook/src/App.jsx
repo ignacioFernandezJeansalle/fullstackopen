@@ -44,18 +44,35 @@ function App() {
     if (!newName) return alert("Please enter a valid name");
     if (!newNumber) return alert("Please enter a valid number");
 
-    if (persons.some((person) => person.name === newName)) return alert(`${newName} is already added to phonebook`);
+    const personFound = persons.find((person) => person.name === newName);
+    if (personFound) {
+      if (window.confirm(`${personFound.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const personUpdate = { ...personFound, number: newNumber };
 
-    const newPerson = { name: newName, number: newNumber };
-    personsServices.create(newPerson).then((data) => {
-      const newPersons = persons.concat(data);
-      setPersons(newPersons);
+        personsServices.update(personUpdate).then((data) => {
+          const newPersons = persons.map((person) => (person.id !== data.id ? person : data));
+          setPersons(newPersons);
 
-      setNewName("");
-      setNewNumber("");
-      setFilter("");
-      setPersonsToShow(newPersons);
-    });
+          setNewName("");
+          setNewNumber("");
+          setFilter("");
+          setPersonsToShow(newPersons);
+        });
+      } else {
+        return;
+      }
+    } else {
+      const newPerson = { name: newName, number: newNumber };
+      personsServices.create(newPerson).then((data) => {
+        const newPersons = persons.concat(data);
+        setPersons(newPersons);
+
+        setNewName("");
+        setNewNumber("");
+        setFilter("");
+        setPersonsToShow(newPersons);
+      });
+    }
   };
 
   const handleRemovePersonOf = (person) => {
