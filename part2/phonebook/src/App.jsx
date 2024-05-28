@@ -23,12 +23,12 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        alert("Error: could not get data from database");
+        handleMessage("Error: could not get data from database", true);
       });
   }, []);
 
-  const handleMessage = (message) => {
-    setNotificationMessage(message);
+  const handleMessage = (message, error) => {
+    setNotificationMessage({ message, error });
     setTimeout(() => {
       setNotificationMessage(null);
     }, 5000);
@@ -74,11 +74,11 @@ function App() {
             setNewNumber("");
             setFilter("");
             setPersonsToShow(newPersons);
-            handleMessage(`Updated ${data.name}`);
+            handleMessage(`Updated ${data.name}`, false);
           })
           .catch((err) => {
             console.log(err);
-            alert("Error: could not update person");
+            handleMessage("Error: could not update person", true);
           });
       } else {
         return;
@@ -95,11 +95,11 @@ function App() {
           setNewNumber("");
           setFilter("");
           setPersonsToShow(newPersons);
-          handleMessage(`Added ${data.name}`);
+          handleMessage(`Added ${data.name}`, false);
         })
         .catch((err) => {
           console.log(err);
-          alert("Error: could not create person");
+          handleMessage("Error: could not create person", true);
         });
     }
   };
@@ -115,7 +115,7 @@ function App() {
         })
         .catch((err) => {
           console.log(err);
-          alert("Error: could not delete person");
+          handleMessage("Error: could not delete person", true);
         });
     }
   };
@@ -123,7 +123,7 @@ function App() {
   return (
     <main>
       <h1>Phonebook</h1>
-      <Notification message={notificationMessage} />
+      <Notification {...notificationMessage} />
       <Filter valueFilter={filter} onChangeFilter={handleChangeNewFilter} />
 
       <h2>Add a new</h2>

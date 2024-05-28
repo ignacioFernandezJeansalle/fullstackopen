@@ -1,5 +1,7 @@
-export default function Notification({ message }) {
+export default function Notification({ message, error }) {
   if (!message) return null;
 
-  return <div className="notification">{message}</div>;
+  const className = error ? "notification error" : "notification";
+
+  return <div className={className}>{message}</div>;
 }
