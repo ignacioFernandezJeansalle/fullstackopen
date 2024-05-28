@@ -1,9 +1,9 @@
-export default function PersonForm({ valueName, onChaneName, valueNumber, onChangeNumber, submit }) {
+export default function PersonForm({ valueName, onChangeName, valueNumber, onChangeNumber, submit }) {
   return (
     <form>
       <div>
         <label htmlFor="newName">name: </label>
-        <input id="newName" onChange={onChaneName} value={valueName} />
+        <input id="newName" onChange={onChangeName} value={valueName} />
       </div>
       <div>
         <label htmlFor="newNumber">number: </label>
