@@ -47,12 +47,17 @@ function App() {
 
     if (persons.some((person) => person.name === newName)) return alert(`${newName} is already added to phonebook`);
 
-    const newPersons = persons.concat({ name: newName, number: newNumber, id: persons.length + 1 });
-    setPersons(newPersons);
-    setNewName("");
-    setNewNumber("");
-    setFilter("");
-    setPersonsToShow(newPersons);
+    const newPerson = { name: newName, number: newNumber };
+    axios.post("http://localhost:3001/persons", newPerson).then((response) => {
+      console.log(response);
+      const newPersons = persons.concat(response.data);
+
+      setPersons(newPersons);
+      setNewName("");
+      setNewNumber("");
+      setFilter("");
+      setPersonsToShow(newPersons);
+    });
   };
 
   return (
@@ -63,7 +68,7 @@ function App() {
       <h2>Add a new</h2>
       <PersonForm
         valueName={newName}
-        onChaneName={handleChangeNewName}
+        onChangeName={handleChangeNewName}
         valueNumber={newNumber}
         onChangeNumber={handleChangeNewNumber}
         submit={handleSubmitForm}
