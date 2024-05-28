@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import personsServices from "./services/persons";
 
+import Notification from "./components/Notification";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
@@ -11,6 +12,7 @@ function App() {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     personsServices
@@ -24,6 +26,13 @@ function App() {
         alert("Error: could not get data from database");
       });
   }, []);
+
+  const handleMessage = (message) => {
+    setNotificationMessage(message);
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
+  };
 
   const handleChangeNewFilter = (event) => {
     const newFilter = event.target.value;
@@ -65,6 +74,7 @@ function App() {
             setNewNumber("");
             setFilter("");
             setPersonsToShow(newPersons);
+            handleMessage(`Updated ${data.name}`);
           })
           .catch((err) => {
             console.log(err);
@@ -85,6 +95,7 @@ function App() {
           setNewNumber("");
           setFilter("");
           setPersonsToShow(newPersons);
+          handleMessage(`Added ${data.name}`);
         })
         .catch((err) => {
           console.log(err);
@@ -112,6 +123,7 @@ function App() {
   return (
     <main>
       <h1>Phonebook</h1>
+      <Notification message={notificationMessage} />
       <Filter valueFilter={filter} onChangeFilter={handleChangeNewFilter} />
 
       <h2>Add a new</h2>
