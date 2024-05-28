@@ -58,6 +58,16 @@ function App() {
     });
   };
 
+  const handleRemovePersonOf = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personsServices.remove(person.id).then((data) => {
+        const newPersons = persons.filter((person) => person.id !== data.id);
+        setPersons(newPersons);
+        setPersonsToShow(newPersons);
+      });
+    }
+  };
+
   return (
     <main>
       <h1>Phonebook</h1>
@@ -73,7 +83,7 @@ function App() {
       />
 
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} handleRemovePersonOf={handleRemovePersonOf} />
     </main>
   );
 }
