@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #222;
+  color: #eee;
+  margin-left: 32px;
+}
+
+header {
+  padding-block: 32px;
+}
+
+form {
+  display: flex;
+  column-gap: 16px;
+}
+
+.message {
+  margin-block: 16px;
+  padding: 4px 16px;
+  width: max-content;
+  background: gray;
+}
+
+.loading {
+  background: goldenrod;
+}
+
+.list-countries {
+  margin-block: 16px;
+}
