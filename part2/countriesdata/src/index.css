@@ -17,10 +17,10 @@ header {
 form {
   display: flex;
   column-gap: 16px;
+  margin-bottom: 16px;
 }
 
 .message {
-  margin-block: 16px;
   padding: 4px 16px;
   width: max-content;
   background: gray;
@@ -31,5 +31,23 @@ form {
 }
 
 .list-countries {
-  margin-block: 16px;
+  list-style: none;
+}
+
+.country-data h2 {
+  margin-bottom: 8px;
+}
+
+.country-data p {
+  margin-bottom: 4px;
+}
+
+.country-data ul {
+  margin-bottom: 4px;
+  margin-left: 32px;
+}
+
+.country-data img {
+  margin-top: 12px;
+  max-width: 200px;
 }
