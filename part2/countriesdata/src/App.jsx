@@ -64,6 +64,14 @@ export default function App() {
     setFindCountries(newFindCountries);
   };
 
+  const handleClickShowDetails = (name) => {
+    setCountriesToShow(null);
+    const newCountryData = countriesToShow.filter((country) => {
+      return country.name.common === name;
+    });
+    setCountryData(newCountryData[0]);
+  };
+
   return (
     <>
       <Header />
@@ -74,7 +82,7 @@ export default function App() {
         </form>
 
         <Message {...message} />
-        <CountriesList countries={countriesToShow} />
+        <CountriesList countries={countriesToShow} handleClickShowDetails={handleClickShowDetails} />
         <CountryData countryData={countryData} />
       </main>
     </>
