@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import countriesServices from "./services/countriesServices";
+import weatherServices from "./services/weatherServices";
 
 import Header from "./components/Header";
-import Message from "./components/Message";
+import SearchForm from "./components/SearchForm";
 import CountriesList from "./components/CountriesList";
 import CountryData from "./components/CountryData";
+import Weather from "./components/Weather";
 
 export default function App() {
   const [message, setMessage] = useState({ message: "Loading", className: "message loading" });
@@ -12,17 +14,41 @@ export default function App() {
   const [countryData, setCountryData] = useState(null);
   const [countriesToShow, setCountriesToShow] = useState(null);
   const [findCountries, setFindCountries] = useState("");
+  const [weather, setWeather] = useState(null);
 
   // get all countries from API
   useEffect(() => {
-    axios
-      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-      .then((response) => {
-        const newCountries = response.data;
-        setCountries(newCountries);
+    countriesServices
+      .getAll()
+      .then((data) => {
+        setCountries(data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // get weather from API
+  useEffect(() => {
+    if (!countryData) {
+      setWeather(null);
+      return;
+    }
+
+    const { capital, capitalInfo } = countryData;
+    const lat = capitalInfo.latlng[0];
+    const lon = capitalInfo.latlng[1];
+
+    weatherServices
+      .get(lat, lon)
+      .then((data) => {
+        const temperature = data.main.temp;
+        const wind = data.wind.speed;
+        const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+        const newWeather = { capital: capital[0], temperature, wind, iconUrl };
+        setWeather(newWeather);
+      })
+      .catch((err) => console.log(err));
+  }, [countryData]);
 
   // update countries to show and message
   useEffect(() => {
@@ -39,6 +65,13 @@ export default function App() {
       const search = country.name.common;
       return search.toLowerCase().includes(findCountries.toLowerCase());
     });
+
+    if (newCountriesToShow.length === 0) {
+      setMessage({ message: "There are no results", className: "message" });
+      setCountriesToShow(null);
+      setCountryData(null);
+      return;
+    }
 
     if (newCountriesToShow.length === 1) {
       setMessage(null);
@@ -76,14 +109,11 @@ export default function App() {
     <>
       <Header />
       <main>
-        <form>
-          <label htmlFor="input-find-countries">Find countries</label>
-          <input id="input-find-countries" type="text" value={findCountries} onChange={handleChangeFindCountries} />
-        </form>
+        <SearchForm value={findCountries} onChange={handleChangeFindCountries} message={message} />
 
-        <Message {...message} />
         <CountriesList countries={countriesToShow} handleClickShowDetails={handleClickShowDetails} />
         <CountryData countryData={countryData} />
+        <Weather weather={weather} />
       </main>
     </>
   );
