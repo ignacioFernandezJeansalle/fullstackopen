@@ -1,5 +1,7 @@
-export default function Message({ message, className }) {
-  if (message === undefined) return null;
+export default function Message({ messageObj }) {
+  if (!messageObj) return null;
+
+  const { message, className } = messageObj;
 
   return <p className={className}>{message}</p>;
 }
