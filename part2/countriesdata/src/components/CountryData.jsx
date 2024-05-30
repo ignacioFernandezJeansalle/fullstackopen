@@ -7,7 +7,7 @@ export default function CountryData({ countryData }) {
   return (
     <div className="country-data">
       <h2>{name.common}</h2>
-      <p>Capital: {capital}</p>
+      <p>Capital: {capital[0]}</p>
       <p>Area: {area}</p>
       <p>Languages:</p>
       <ul>
