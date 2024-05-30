@@ -16,7 +16,7 @@ export default function App() {
   const [findCountries, setFindCountries] = useState("");
   const [weather, setWeather] = useState(null);
 
-  // get all countries from API
+  // Get all countries from API
   useEffect(() => {
     countriesServices
       .getAll()
@@ -26,7 +26,7 @@ export default function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  // get weather from API
+  // Get weather from API
   useEffect(() => {
     if (!countryData) {
       setWeather(null);
@@ -50,7 +50,7 @@ export default function App() {
       .catch((err) => console.log(err));
   }, [countryData]);
 
-  // update countries to show and message
+  // Update countries to show and message
   useEffect(() => {
     if (!countries) return;
 
