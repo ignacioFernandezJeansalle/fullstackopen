@@ -77,8 +77,8 @@ function App() {
             handleMessage(`Updated ${data.name}`, false);
           })
           .catch((err) => {
-            console.log(err);
-            handleMessage("Error: could not update person", true);
+            console.log(err.response.data.error);
+            handleMessage(err.response.data.error, true);
           });
       } else {
         return;
@@ -98,8 +98,8 @@ function App() {
           handleMessage(`Added ${data.name}`, false);
         })
         .catch((err) => {
-          console.log(err);
-          handleMessage("Error: could not create person", true);
+          console.log(err.response.data.error);
+          handleMessage(err.response.data.error, true);
         });
     }
   };
